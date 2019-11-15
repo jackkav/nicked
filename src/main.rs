@@ -1,8 +1,7 @@
 extern crate nickel;
-use std::process::Command;
 use nickel::status::StatusCode;
 use nickel::{HttpRouter, MiddlewareResult, Nickel, QueryString, Request, Response};
-//todo, wait, headers
+use std::{thread, time};
 
 fn handle<'mw>(_req: &mut Request, mut res: Response<'mw>) -> MiddlewareResult<'mw> {
     let query = _req.query();
@@ -12,12 +11,14 @@ fn handle<'mw>(_req: &mut Request, mut res: Response<'mw>) -> MiddlewareResult<'
         res.set(StatusCode::Unregistered(statuscode).class().default_code());
     }
     if query.get("wait").is_some() {
-        let wait = query.get("wait").unwrap();
+        let wait: u64 = query.get("wait").unwrap().parse().unwrap();
         println!("Waiting {:?}", wait);
-        let mut child = Command::new("sleep").arg(wait).spawn().unwrap();
-        let _result = child.wait().unwrap();
+        let ten_millis = time::Duration::from_millis(wait);
+        thread::sleep(ten_millis);
     }
-    res.send("hello world")
+    res.headers_mut().set_raw("String-Header", vec![b"string-value".to_vec()]);
+    res.headers_mut().set_raw("Integer-Header", vec![b"1".to_vec()]);
+    res.send("Finished")
 }
 
 fn main() {
