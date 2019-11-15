@@ -16,6 +16,10 @@ cargo build
 cargo run
 ```
 
+file watcher mode
+
+`catflap -- cargo watch -x run`
+
 ### deploy
 ```docker
 docker build -t nicked .
