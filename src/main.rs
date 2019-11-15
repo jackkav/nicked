@@ -27,5 +27,5 @@ fn main() {
         .get("**", handle)
         .post("**", handle)
         .put("**", handle);
-    server.listen("127.0.0.1:6767").unwrap();
+    server.listen("0.0.0.0:6000").unwrap();
 }
