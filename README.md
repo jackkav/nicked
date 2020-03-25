@@ -18,9 +18,10 @@ cargo run
 
 file watcher mode
 
-`catflap -- cargo watch -x run`
+`catflap -- cargo watch -w src -x run`
 
 ### deploy
+
 ```docker
 docker build -t nicked .
 docker run -p 6000:6000 --rm --init nicked
